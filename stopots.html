@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo Stop</title>
+
+    <link rel="stylesheet" href="stopots.css">
+    <style>
+        /* Estilos CSS permanecem os mesmos */
+    </style>
+</head>
+<body>
+    
+    <h1>Jogo Stop</h1>
+
+    <div id="letter">Letra: <span id="letter-display"></span></div>
+
+    <ul id="categories">
+        <li>País</li>
+        <li>Cidade</li>
+        <li>Comida</li>
+        <li>Cor</li>
+        <li>Animal</li>
+        <li>Nome</li>
+        <li>Fruta</li>
+        <li>Esporte</li>
+        <li>Profissão</li>
+        <LI>Celebridade</LI>
+        <!-- Adicione mais categorias aqui -->
+    </ul>
+
+    <div id="answers">
+        <!-- Aqui, os campos para as respostas serão preenchidos dinamicamente usando JavaScript -->
+    </div>
+
+    <script>
+        function generateRandomLetter() {
+            const letters = "BCDFGHJKLMNPQRSTVWXYZ";
+            return letters.charAt(Math.floor(Math.random() * letters.length));
+        }
+
+        function createAnswerFields(letter) {
+            const categories = document.querySelectorAll('#categories li');
+            const answersContainer = document.getElementById('answers');
+            answersContainer.innerHTML = '';
+
+            categories.forEach((category) => {
+                const input = document.createElement('input');
+                input.setAttribute('type', 'text');
+                input.setAttribute('placeholder', category.textContent);
+                answersContainer.appendChild(input);
+            });
+
+            document.getElementById('letter-display').textContent = letter;
+        }
+
+        function validateAnswers(letter) {
+            const inputs = document.querySelectorAll('#answers input');
+            inputs.forEach((input) => {
+                const category = input.getAttribute('placeholder');
+                const value = input.value.trim().toLowerCase();
+                if (value === '' || value.charAt(0).toLowerCase() !== letter.toLowerCase()) {
+                    alert(`A resposta para a categoria "${category}" deve começar com a letra ${letter}.`);
+                    return false;
+                }
+            });
+            return true;
+        }
+
+        function startGame() {
+            const letter = generateRandomLetter();
+            createAnswerFields(letter);
+            return letter;
+        }
+
+        // Executa a função para começar o jogo
+        let currentLetter = startGame();
+
+        // Adicione um evento para verificar as respostas quando o jogador pressionar Enter
+        document.addEventListener('keyup', function(event) {
+            if (event.keyCode === 13) { // 13 é o código da tecla Enter
+                if (validateAnswers(currentLetter)) {
+                    currentLetter = startGame();
+                }
+            }
+        });
+
+    </script><BR>
+    <button>STOP!</button>
+
+</body>
+</html>
